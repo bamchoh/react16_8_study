@@ -1,32 +1,23 @@
 import * as React from 'react';
-const { useReducer } = React;
+const { useRef } = React;
 
-const initialState = {count: 0};
-
-function reducer(state, action) {
-  switch(action.type) {
-    case 'increment':
-      return {count: state.count + 1};
-    case 'decrement':
-      return {count: state.count - 1};
-    default:
-      throw new Error();
-  }
-}
-
-function Counter({initialCount}) {
-  const [state, dispatch] = useReducer(reducer, initialState);
+function TextInputWithFocusButton() {
+  const inputEl = useRef(null);
+  const onButtonClick = () => {
+    inputEl.current.focus();
+  };
   return (
     <>
-      Count: {state.count}
-      <button onClick={() => dispatch({type: 'increment'})}>+</button>
-      <button onClick={() => dispatch({type: 'decrement'})}>-</button>
+      <input ref={inputEl} type="text" />
+      <button onClick={onButtonClick}>Focus the input</button>
     </>
   );
 }
 
 export default () => {
   return (
-    <Counter initialCount={10} />
+    <>
+      <TextInputWithFocusButton />
+    </>
   );
 };
