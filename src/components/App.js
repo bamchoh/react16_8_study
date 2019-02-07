@@ -1,26 +1,25 @@
-import React, { useState } from 'react';
-
-function getRandomInit(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
-
-function Counter({initialCount}) {
-  const [count, setCount] = useState(initialCount);
-  return (
-    <>
-      <h1>Count: {count}</h1>
-      <button onClick={() => setCount(initialCount)}>Reset</button>
-      <button onClick={() => setCount(count + 1)}>+</button>
-      <button onClick={() => setCount(count - 1)}>-</button>
-    </>
-  );
-}
+import * as React from 'react';
+const { useState, useEffect } = React;
 
 export default () => {
   const [a, b] = useState(0);
+
+  useEffect(() => {
+    const timerid = setTimeout(() => {
+      console.log("triggered!!");
+    }, 1000);
+    console.log("timer");
+
+    return () => {
+      clearTimeout(timerid);
+      console.log("clean up useEffect")
+    }
+  }, [a]);
+
   return (
-    <Counter initialCount={() => {
-      return getRandomInit(100)
-    }} />
+    <>
+      time: <b>{a}</b>
+      <button onClick={() => b(a+1)}>+</button>
+    </>
   )
 };
