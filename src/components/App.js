@@ -1,28 +1,29 @@
 import * as React from 'react';
-const { useRef, useEffect, useLayoutEffect } = React;
+const { useRef, forwardRef, useImperativeHandle } = React;
 
-const UseLayoutEffectSample = () => {
-  const displayAreaRef = useRef();
-  const renderCountRef = useRef(0);
+function FancyInput(props, ref) {
+  const inputRef = useRef();
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      inputRef.current.focus();
+    }
+  }));
+  return <input ref={inputRef} />;
+}
 
-  useLayoutEffect(() => {
-    renderCountRef.current++;
-    displayAreaRef.current.textContent = String(renderCountRef.current);
-  });
-
-  return (
-    <p>
-      このコンポーネントは
-      <b ref={displayAreaRef} />
-      回描画されました。
-    </p>
-  );
-};
+FancyInput = forwardRef(FancyInput);
 
 export default () => {
+  const inputRef = useRef();
+
+  const focus = () => {
+    inputRef.current.focus();
+  }
+
   return (
     <>
-      <UseLayoutEffectSample />
+      <FancyInput ref={inputRef} />
+      <button onClick={focus} >Focus</button>
     </>
   );
 };
