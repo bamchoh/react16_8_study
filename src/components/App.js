@@ -1,23 +1,28 @@
 import * as React from 'react';
-const { useRef } = React;
+const { useRef, useEffect, useLayoutEffect } = React;
 
-function TextInputWithFocusButton() {
-  const inputEl = useRef(null);
-  const onButtonClick = () => {
-    inputEl.current.focus();
-  };
+const UseLayoutEffectSample = () => {
+  const displayAreaRef = useRef();
+  const renderCountRef = useRef(0);
+
+  useLayoutEffect(() => {
+    renderCountRef.current++;
+    displayAreaRef.current.textContent = String(renderCountRef.current);
+  });
+
   return (
-    <>
-      <input ref={inputEl} type="text" />
-      <button onClick={onButtonClick}>Focus the input</button>
-    </>
+    <p>
+      このコンポーネントは
+      <b ref={displayAreaRef} />
+      回描画されました。
+    </p>
   );
-}
+};
 
 export default () => {
   return (
     <>
-      <TextInputWithFocusButton />
+      <UseLayoutEffectSample />
     </>
   );
 };
