@@ -1,32 +1,36 @@
 import * as React from 'react';
-const { useReducer } = React;
+const { useState, useMemo } = React;
 
-const initialState = {count: 0};
+function Counter({a, b}) {
+  const [cv, setState] = useState(0);
 
-function reducer(state, action) {
-  switch(action.type) {
-    case 'increment':
-      return {count: state.count + 1};
-    case 'decrement':
-      return {count: state.count - 1};
-    default:
-      throw new Error();
+  const add = useMemo(() => {
+    console.log("test")
+    return a + b;
+  }, [a,b]);
+
+  const add2 = () => {
+    console.log("test2")
+    return a + b;
   }
-}
-
-function Counter({initialCount}) {
-  const [state, dispatch] = useReducer(reducer, initialState);
   return (
     <>
-      Count: {state.count}
-      <button onClick={() => dispatch({type: 'increment'})}>+</button>
-      <button onClick={() => dispatch({type: 'decrement'})}>-</button>
+      <p>Count1: {add}</p>
+      <p>Count2: {add2()}</p>
+      <p>Count3: {cv}</p>
+      <button onClick={() => setState(prev => prev + 1)}>+</button>
     </>
   );
 }
 
 export default () => {
+  const [a, setA] = useState(1);
+  const [b, setB] = useState(2);
   return (
-    <Counter initialCount={10} />
+    <>
+    <Counter a={a} b={b}/>
+    <button onClick={() => setA(prev => prev + 1)}>a++</button>
+    <button onClick={() => setB(prev => prev + 1)}>b++</button>
+    </>
   );
 };
