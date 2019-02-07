@@ -1,12 +1,29 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+const { useRef, forwardRef, useImperativeHandle } = React;
+
+function FancyInput(props, ref) {
+  const inputRef = useRef();
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      inputRef.current.focus();
+    }
+  }));
+  return <input ref={inputRef} />;
+}
+
+FancyInput = forwardRef(FancyInput);
 
 export default () => {
-  const [a, b] = useState(0);
+  const inputRef = useRef();
+
+  const focus = () => {
+    inputRef.current.focus();
+  }
+
   return (
-    <div>
-      <button onClick={() => { b(a + 1); }}>
-        \ovo/ {"<"}{a} times!!
-      </button>
-    </div>
-  )
+    <>
+      <FancyInput ref={inputRef} />
+      <button onClick={focus} >Focus</button>
+    </>
+  );
 };
